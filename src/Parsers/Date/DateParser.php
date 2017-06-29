@@ -70,15 +70,9 @@ class DateParser
 	 *
 	 * @param DateTime $dateTime
 	 * @return string
-	 *
-	 * @throws CantParseException
 	 */
 	public function parseString(DateTime $dateTime) : ?string
 	{
-		if ($dateTime === NULL || get_class($dateTime) !== "DateTime") {
-			throw new CantParseException("Bad object or NULL given.");
-		}
-
 		if (((int) $dateTime->format("His")) === 0) {
 			return $dateTime->format($this->dateFormat->getDateFormat());
 		}
