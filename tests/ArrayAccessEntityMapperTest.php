@@ -1,4 +1,5 @@
 <?php
+
 namespace DoctrineMapper\Tests;
 
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -24,24 +25,34 @@ use PHPUnit\Framework\TestCase;
  */
 final class ArrayAccessEntityMapperTest extends TestCase
 {
+	/** @var  ArrayAccessEntityMapper */
+	private $mapper;
+
 	public static function setUpBeforeClass()
 	{
 		require_once __DIR__ . "/Assets/TestEntity.php";
 	}
 
-	public function testSetToEntitySimpleValues(){
-		$mapper = new ArrayAccessEntityMapper($this->getEmMock(), $this->createDateParser());
+	public function setUp()
+	{
+		$this->mapper = new ArrayAccessEntityMapper($this->getEmMock(), $this->createDateParser());
+	}
+
+	public function testSetToEntitySimpleValues()
+	{
+		$mapper = $this->mapper;
 
 		$date = new \DateTime('28.11.2015');
 		$dateTime = new \DateTime('2016-11-29 23:51:00');
 
 		$values = [
-			'string'    => 'ssss',
-		    'int'       => 555,
-		    'float'     => '0.5',
-		    'date'      => '28.11.2015',
-		    'dateTime'  => $dateTime,
-		    'boolean'  => FALSE
+			'string'        => 'ssss',
+			'int'           => 555,
+			'float'         => '0.5',
+			'date'          => '28.11.2015',
+			'dateTime'      => $dateTime,
+			'boolean'       => FALSE,
+			'defaultToNull' => NULL
 		];
 
 		$testEntity = new TestEntity();
@@ -49,13 +60,13 @@ final class ArrayAccessEntityMapperTest extends TestCase
 		/** @var TestEntity $entity */
 		$entity = $mapper->setToEntity($values, $testEntity, [], []);
 
-
-		$this->assertEquals($values['string'], $entity->getString());
-		$this->assertEquals((int)$values['int'], $entity->getInt());
-		$this->assertEquals((float)$values['float'], $entity->getFloat());
-		$this->assertEquals($date, $entity->getDate());
-		$this->assertEquals($values['dateTime'], $entity->getDateTime());
-		$this->assertEquals((bool)$values['boolean'], $entity->isBoolean());
+		$this->assertSame($values['string'], $entity->getString());
+		$this->assertSame((int)$values['int'], $entity->getInt());
+		$this->assertSame((float)$values['float'], $entity->getFloat());
+		$this->assertEquals($date->format(DATE_ISO8601), $entity->getDate()->format(DATE_ISO8601));
+		$this->assertSame($values['dateTime'], $entity->getDateTime());
+		$this->assertSame((bool)$values['boolean'], $entity->isBoolean());
+		$this->assertNull($values['defaultToNull']);
 	}
 
 	/**
@@ -63,8 +74,8 @@ final class ArrayAccessEntityMapperTest extends TestCase
 	 */
 	protected function getEmMock()
 	{
-		$dir = __DIR__."/Asset/Entity/";
-		$config = Setup::createAnnotationMetadataConfiguration(array($dir), true);
+		$dir = __DIR__ . "/Asset/Entity/";
+		$config = Setup::createAnnotationMetadataConfiguration([$dir], TRUE);
 
 		$eventManager = new EventManager();
 		$platform = new PostgreSqlPlatform(); //TODO
@@ -93,7 +104,7 @@ final class ArrayAccessEntityMapperTest extends TestCase
 			->will($this->returnValue($eventManager));
 		$emMock->expects($this->any())
 			->method('getClassMetadata')
-			->will($this->returnCallback(function($class) use ($metadataFactory){
+			->will($this->returnCallback(function ($class) use ($metadataFactory) {
 				return $metadataFactory->getMetadataFor($class);
 			}));
 
@@ -103,7 +114,8 @@ final class ArrayAccessEntityMapperTest extends TestCase
 	/**
 	 * @return DateParser
 	 */
-	protected function createDateParser(){
+	protected function createDateParser()
+	{
 		return new DateParser(new SimpleDateFormat(), new SimpleDateDecorator());
 	}
 }

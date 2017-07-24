@@ -53,66 +53,11 @@ class TestEntity {
 	 */
 	protected $boolean;
 
-	public function getString()
-	{
-		return $this->string;
-	}
-
-	public function setString($string)
-	{
-		$this->string = $string;
-
-		return $this;
-	}
-
-	public function getInt()
-	{
-		return $this->int;
-	}
-
-	public function setInt($int)
-	{
-		$this->int = $int;
-
-		return $this;
-	}
-
-	public function getFloat()
-	{
-		return $this->float;
-	}
-
-	public function setFloat($float)
-	{
-		$this->float = $float;
-
-		return $this;
-	}
-
-	public function getDate(): DateTime
-	{
-		return $this->date;
-	}
-
-	public function setDate(DateTime $date)
-	{
-		$this->date = $date;
-
-		return $this;
-	}
-
-
-	public function getDateTime(): DateTime
-	{
-		return $this->dateTime;
-	}
-
-	public function setDateTime(DateTime $dateTime)
-	{
-		$this->dateTime = $dateTime;
-
-		return $this;
-	}
+	/**
+	 * @ORM\Column(name="defaultToNull", type="integer", nullable=TRUE)
+	 * @var  integer
+	 */
+	protected $defaultToNull = 8;
 
 	/**
 	 * @return string
@@ -134,14 +79,142 @@ class TestEntity {
 		return $this;
 	}
 
+	/**
+	 * @return string
+	 */
+	public function getString(): string
+	{
+		return $this->string;
+	}
+
+	/**
+	 * @param string $string
+	 *
+	 * @return TestEntity
+	 */
+	public function setString($string)
+	{
+		$this->string = $string;
+
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getInt(): int
+	{
+		return $this->int;
+	}
+
+	/**
+	 * @param int $int
+	 *
+	 * @return TestEntity
+	 */
+	public function setInt($int)
+	{
+		$this->int = $int;
+
+		return $this;
+	}
+
+	/**
+	 * @return float
+	 */
+	public function getFloat(): float
+	{
+		return $this->float;
+	}
+
+	/**
+	 * @param float $float
+	 *
+	 * @return TestEntity
+	 */
+	public function setFloat($float)
+	{
+		$this->float = $float;
+
+		return $this;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getDate(): DateTime
+	{
+		return $this->date;
+	}
+
+	/**
+	 * @param DateTime $date
+	 *
+	 * @return TestEntity
+	 */
+	public function setDate($date)
+	{
+		$this->date = $date;
+
+		return $this;
+	}
+
+	/**
+	 * @return DateTime
+	 */
+	public function getDateTime(): DateTime
+	{
+		return $this->dateTime;
+	}
+
+	/**
+	 * @param DateTime $dateTime
+	 *
+	 * @return TestEntity
+	 */
+	public function setDateTime($dateTime)
+	{
+		$this->dateTime = $dateTime;
+
+		return $this;
+	}
+
+	/**
+	 * @return bool
+	 */
 	public function isBoolean(): bool
 	{
 		return $this->boolean;
 	}
 
+	/**
+	 * @param bool $boolean
+	 *
+	 * @return TestEntity
+	 */
 	public function setBoolean($boolean)
 	{
 		$this->boolean = $boolean;
+
+		return $this;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getDefaultToNull(): ?int
+	{
+		return $this->defaultToNull;
+	}
+
+	/**
+	 * @param int $defaultToNull
+	 *
+	 * @return TestEntity
+	 */
+	public function setDefaultToNull($defaultToNull)
+	{
+		$this->defaultToNull = $defaultToNull;
 
 		return $this;
 	}
